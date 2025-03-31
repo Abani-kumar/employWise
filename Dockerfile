@@ -1,21 +1,8 @@
-# Use an official OpenJDK runtime as a parent image
-FROM eclipse-temurin:17-jdk
+FROM maven:3.8.5-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the Maven wrapper and project files
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-
-# Grant execution permission to Maven wrapper
-RUN chmod +x mvnw
-
-# Build the project
-COPY src ./src
-RUN ./mvnw clean package -DskipTests
-
-
-
-# Run the application
-CMD ["java", "-jar", "target/*.jar"]
+FROM openjdk:17.0.1-jdk-slim
+COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","demo.jar"]
