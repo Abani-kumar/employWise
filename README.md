@@ -66,4 +66,4 @@ mvn spring-boot:run
 - **Query Param**: `level`
 
 ## Deployment
-Hosted on: [Provide Hosting URL if applicable]
+Hosted on: `https://employwise-xaad.onrender.com`
